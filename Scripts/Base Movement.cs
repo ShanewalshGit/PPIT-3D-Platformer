@@ -5,7 +5,10 @@ using UnityEngine;
 public class BaseMovement : MonoBehaviour
 {
     [Header("Movement")]
+    public float speed;
+    public float sprintSpeed;
     public float moveSpeed;
+    public bool isSprinting;
     public Transform orient;
     float horizontal;
     float vertical;
@@ -69,6 +72,17 @@ public class BaseMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        moveSpeed = isSprinting ? sprintSpeed : speed;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isSprinting = true;
+        }
+        else
+        {
+            isSprinting = false;
+        }
+
         Movement();
     }
 
