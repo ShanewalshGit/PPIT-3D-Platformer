@@ -5,16 +5,16 @@ using UnityEngine.Scripting.APIUpdating;
 
 public class EnemyCollide : MonoBehaviour
 {
-    Rigidbody2D rb;
+    Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
     }
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             Destroy(gameObject);
         }
