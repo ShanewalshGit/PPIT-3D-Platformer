@@ -17,6 +17,7 @@ public class EnemyCollide : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Destroy(gameObject);
+            FindObjectOfType<SessionController>().AddPoints(10);
         }
     }
 }
