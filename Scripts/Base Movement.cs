@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MimicSpace;
 using UnityEngine;
 
 public class BaseMovement : MonoBehaviour
@@ -23,41 +24,40 @@ public class BaseMovement : MonoBehaviour
 
     [Header("Ground Check")]
     public LayerMask groundLayer;
-    public float playerHeight;
+    public LayerMask legsLayer;
+    public LayerMask playerLayer;
     public float groundDrag;
     bool isGrounded;
-
     Vector3 moveDir;
-
     Rigidbody rb;
+
+    //Mimic character
+    [Tooltip("Body Height from ground")]
+    [Range(0.5f, 15f)]
+    public float height = 0.8f;
+    public float velocityLerpCoef = 4f;
+    Mimic myMimic;
+
+    [SerializeField] GameObject mimicBody;
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         canJump = true;
+        myMimic = FindAnyObjectByType<Mimic>();
+
+        // Ignore collisions between the player and the legs
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int legsLayer = LayerMask.NameToLayer("Legs");
+        Physics.IgnoreLayerCollision(playerLayer, legsLayer);
     }
 
     private void Update()
     {
-        // Ground Check based on player height and ground mask layer
-        //isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer); 
-        //Debug.Log(groundLayer);
-        //Debug.Log(isGrounded);
-
         InputHandler();
         LimitSpeed();
-
-        /*
-        if (isGrounded)
-        {
-            Debug.DrawRay(transform.position, Vector3.down * (playerHeight * 0.5f + 0.2f), Color.green);
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, Vector3.down * (playerHeight * 0.5f + 0.2f), Color.red);
-        }
-        */
 
         // Handle drag
         if (isGrounded)
@@ -83,6 +83,46 @@ public class BaseMovement : MonoBehaviour
             isSprinting = false;
         }
 
+        if(Physics.Raycast(mimicBody.transform.position, Vector3.down, 1.1f, groundLayer))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        if(isGrounded && rb.velocity.y < 0.1f)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        }
+
+        // increase and decrease height on the mimic based on q and z keys
+        if (Input.GetKey(KeyCode.Q))
+        {
+            // Limit the height to 5
+            if (height < 15f)
+            {
+                height += 0.1f;
+            }
+            else if (height > 15f)
+            {
+                height = 15f;
+            }
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            // Limit the height to 0.5
+            if (height > 0.5f)
+            {
+                height -= 0.1f;
+            }
+            else if (height < 0.5f)
+            {
+                height = 0.5f;
+            }
+        }
+
         Movement();
     }
 
@@ -104,7 +144,7 @@ public class BaseMovement : MonoBehaviour
     {
         // calculate move direction
         moveDir = orient.forward * vertical + orient.right * horizontal;
-
+        
         // on ground
         if(isGrounded)
         {
@@ -116,12 +156,14 @@ public class BaseMovement : MonoBehaviour
             rb.AddForce(10f * airMultiplier * moveSpeed * moveDir.normalized, ForceMode.Force);
         }
 
+        // Assigning velocity to the mimic to assure great leg placement
+        myMimic.velocity = rb.velocity;
+        ManageHeight(); // Manage the height of the character
     }
 
     private void LimitSpeed()
     {
         Vector3 vel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-
         if(vel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = vel.normalized*moveSpeed;
@@ -134,6 +176,25 @@ public class BaseMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        // Assigning velocity to the mimic to assure great leg placement
+        myMimic.velocity = rb.velocity;
+
+    }
+
+    private void ManageHeight() {
+        // Cast a ray downwards to detect the ground
+        RaycastHit hit;
+        Vector3 destHeight = transform.position;
+        if (Physics.Raycast(mimicBody.transform.position + Vector3.up * 5f, -Vector3.up, out hit, Mathf.Infinity, groundLayer))
+        {
+            Debug.DrawRay(mimicBody.transform.position + Vector3.up * 5f, -Vector3.up * hit.distance, Color.yellow);
+            //Debug.Log("Hit Ground");
+            // If the ground is detected, set the desired height to be the height above the ground
+            destHeight = new Vector3(transform.position.x, hit.point.y + height, transform.position.z);
+
+        }
+        // Lerp the character's position towards the desired height
+        transform.position = Vector3.Lerp(transform.position, destHeight, velocityLerpCoef * Time.deltaTime);
     }
 
     private void ResetCanJump(){
