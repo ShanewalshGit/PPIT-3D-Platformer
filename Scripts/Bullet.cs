@@ -15,5 +15,9 @@ public class Bullet : MonoBehaviour
         if (other.tag == "Platform") {
             Destroy(gameObject);
         }
+
+        if (other.tag == "Player") {
+            FindObjectOfType<SessionController>().ReduceHealth(10);
+        }
     }
 }
