@@ -8,27 +8,36 @@ public class EnemyCollide : MonoBehaviour
 {
     Rigidbody rb;
 
+    
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Player")
         {
+            FindAnyObjectByType<SessionController>().ReduceHealth(10);
+        }
+
+        if (other.gameObject.tag == "Bullet")
+        {
+            Debug.Log("Bullet hit enemy");
+            Destroy(gameObject);
             Destroy(other.gameObject);
-            var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currentSceneIndex);
-            FindAnyObjectByType<SessionController>().RemoveLife();
+            FindAnyObjectByType<SessionController>().AddHealth(10);
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
         {
-            Destroy(gameObject);
+            FindAnyObjectByType<SessionController>().ReduceHealth(10);
+        }
 
-            var bullet = other.gameObject.GetComponent<Bullet>();
-            if (bullet)
-            {
-                Destroy(bullet.gameObject);
-                FindAnyObjectByType<SessionController>().AddPoints(10);
-            }
+        if (other.gameObject.tag == "Bullet")
+        {
+            Debug.Log("Bullet hit enemy");
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+            FindAnyObjectByType<SessionController>().AddHealth(10);
         }
     }
 }
