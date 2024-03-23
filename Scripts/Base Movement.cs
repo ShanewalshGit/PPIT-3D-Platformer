@@ -24,8 +24,6 @@ public class BaseMovement : MonoBehaviour
 
     [Header("Ground Check")]
     public LayerMask groundLayer;
-    public LayerMask legsLayer;
-    public LayerMask playerLayer;
     public float groundDrag;
     bool isGrounded;
     Vector3 moveDir;
@@ -35,6 +33,7 @@ public class BaseMovement : MonoBehaviour
     [Tooltip("Body Height from ground")]
     [Range(0.5f, 15f)]
     public float height = 0.8f;
+    public Vector3 desiredHeight = Vector3.zero;
     public float velocityLerpCoef = 4f;
     Mimic myMimic;
 
@@ -45,13 +44,8 @@ public class BaseMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        canJump = true;
+        ResetCanJump();
         myMimic = FindAnyObjectByType<Mimic>();
-
-        // Ignore collisions between the player and the legs
-        int playerLayer = LayerMask.NameToLayer("Player");
-        int legsLayer = LayerMask.NameToLayer("Legs");
-        Physics.IgnoreLayerCollision(playerLayer, legsLayer);
     }
 
     private void Update()
@@ -92,15 +86,15 @@ public class BaseMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        if(isGrounded && rb.velocity.y < 0.1f)
+        if(isGrounded && rb.velocity.y < 0.1f) // If the character is grounded and the y velocity is less than 0.1
         {
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset the y velocity to 0
         }
 
         // increase and decrease height on the mimic based on q and z keys
         if (Input.GetKey(KeyCode.Q))
         {
-            // Limit the height to 5
+            // Limit the height to 15
             if (height < 15f)
             {
                 height += 0.1f;
@@ -131,7 +125,7 @@ public class BaseMovement : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(jumpKey) && canJump)
+        if (Input.GetKeyDown(jumpKey) && canJump == true) // If the jump key is pressed and the character can jump
         {
             canJump = false;
             Debug.Log("Jump");
@@ -158,9 +152,10 @@ public class BaseMovement : MonoBehaviour
 
         // Assigning velocity to the mimic to assure great leg placement
         myMimic.velocity = rb.velocity;
-        ManageHeight(); // Manage the height of the character
+        ManageHeight(); // Manage the height of character
     }
 
+    
     private void LimitSpeed()
     {
         Vector3 vel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
@@ -169,32 +164,35 @@ public class BaseMovement : MonoBehaviour
             Vector3 limitedVel = vel.normalized*moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
-    }
+    } 
 
     private void Jump()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset the y velocity to 0
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        // Add force to jump in oriented direction
+        rb.AddForce(orient.up * jumpForce, ForceMode.Impulse);
         // Assigning velocity to the mimic to assure great leg placement
         myMimic.velocity = rb.velocity;
-
     }
 
-    private void ManageHeight() {
+    private void ManageHeight() { // Function to manage the height of the character
+        
         // Cast a ray downwards to detect the ground
         RaycastHit hit;
-        Vector3 destHeight = transform.position;
         if (Physics.Raycast(mimicBody.transform.position + Vector3.up * 5f, -Vector3.up, out hit, Mathf.Infinity, groundLayer))
         {
             Debug.DrawRay(mimicBody.transform.position + Vector3.up * 5f, -Vector3.up * hit.distance, Color.yellow);
             //Debug.Log("Hit Ground");
             // If the ground is detected, set the desired height to be the height above the ground
-            destHeight = new Vector3(transform.position.x, hit.point.y + height, transform.position.z);
-
+            desiredHeight = new Vector3(transform.position.x, hit.point.y + height, transform.position.z);
+        }
+        else // If the ground is not detected, assume in air and don't adjust the height
+        {
+            desiredHeight = transform.position;
         }
         // Lerp the character's position towards the desired height
-        transform.position = Vector3.Lerp(transform.position, destHeight, velocityLerpCoef * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, desiredHeight, velocityLerpCoef * Time.deltaTime);
     }
 
     private void ResetCanJump(){
