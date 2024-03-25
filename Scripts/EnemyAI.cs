@@ -11,7 +11,6 @@ public class EnemyAI : MonoBehaviour
 
     //Projectile fire
     public Bullet bulletPrefab;
-    public Transform bulletSpawn;
     public float bulletSpeed = 30.0f;
     public Coroutine fireCoroutine;
 
@@ -30,12 +29,16 @@ public class EnemyAI : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
+    // Animator actions component
+    Actions actions;
+
     // Update is called once per frame
     private void Awake()
     {
         player = GameObject.Find("Mimic").transform;
         //Debug.Log("Player found");
         agent = GetComponent<NavMeshAgent>();
+        actions = GetComponent<Actions>(); // Get the actions component for animation control
     }
 
     private void Update()
@@ -59,6 +62,7 @@ public class EnemyAI : MonoBehaviour
         if (walkPointSet) agent.SetDestination(walkPoint);
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint; // Distance between enemy and walkpoint
+        actions.Walk(); // Run animation
 
         //When walkpoint is reached
         if (distanceToWalkPoint.magnitude < 1f)
@@ -73,6 +77,7 @@ public class EnemyAI : MonoBehaviour
 
         // Set walkpoint to random point in range and check if it is on the ground
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        actions.Stay(); // Stay animation
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
             walkPointSet = true;
@@ -81,6 +86,7 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer() {
         //Debug.Log("Chasing Player");
         agent.SetDestination(player.position);
+        actions.Run(); // Run animation
     }
 
     private void AttackPlayer() {
@@ -91,9 +97,10 @@ public class EnemyAI : MonoBehaviour
         if (!alreadyAttacked) {
 
             // Attack code
+            actions.Attack(); // Attack animation
 
             // instantiate bullet
-            Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity); // create bullet
             // give it position close to enemy
             bullet.transform.position = transform.position + new Vector3(1, 0, 0);
             // give it velocity in direction of player
@@ -113,6 +120,7 @@ public class EnemyAI : MonoBehaviour
 
     public void TakeDamage(float damage) {
         health -= damage;
+        actions.Damage(); // Damage animation
 
         if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
     }
