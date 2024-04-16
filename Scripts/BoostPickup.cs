@@ -26,13 +26,13 @@ public class BoostPickup : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             // Get the Player object from scene and Speed up the player
-            FindAnyObjectByType<Player>().IncreaseSpeed(10f);
+            FindAnyObjectByType<BaseMovement>().IncreaseSpeed(10f);
 
             // Wait for 5 seconds
             yield return new WaitForSeconds(5f);
 
             // Slow down the player
-            player.GetComponent<BaseMovement>().sprintSpeed = 12f;
+            other.GetComponent<BaseMovement>().sprintSpeed = 12f;
 
             // Destroy the ability pickup
             Destroy(gameObject);

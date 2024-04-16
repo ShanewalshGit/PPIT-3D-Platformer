@@ -16,12 +16,15 @@ public class EnemyCollide : MonoBehaviour
             FindAnyObjectByType<SessionController>().ReduceHealth(10);
         }
 
-        if (other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Bullet" || other.gameObject.tag == "Cannonball")
         {
             Debug.Log("Bullet hit enemy");
             Destroy(gameObject);
             Destroy(other.gameObject);
             FindAnyObjectByType<SessionController>().AddHealth(10);
+
+            // Death sfx
+            FindObjectOfType<AudioManager>().PlayEnemyDeath();
         }
     }
 
@@ -32,12 +35,21 @@ public class EnemyCollide : MonoBehaviour
             FindAnyObjectByType<SessionController>().ReduceHealth(10);
         }
 
-        if (other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Bullet" || other.gameObject.tag == "Cannonball")
         {
             Debug.Log("Bullet hit enemy");
             Destroy(gameObject);
             Destroy(other.gameObject);
             FindAnyObjectByType<SessionController>().AddHealth(10);
+
+            // Death sfx
+            FindObjectOfType<AudioManager>().PlayEnemyDeath();
         }
+    }
+
+    public void KillEnemy()
+    {
+        Destroy(gameObject);
+        FindAnyObjectByType<SessionController>().AddHealth(10);
     }
 }

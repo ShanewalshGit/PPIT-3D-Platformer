@@ -107,6 +107,9 @@ public class EnemyAI : MonoBehaviour
             Rigidbody rbb = bullet.GetComponent<Rigidbody>();
             rbb.velocity = (player.position - transform.position).normalized * bulletSpeed;
 
+            // Shoot sfx
+            FindObjectOfType<AudioManager>().PlayEnemyAttack();
+
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
             
