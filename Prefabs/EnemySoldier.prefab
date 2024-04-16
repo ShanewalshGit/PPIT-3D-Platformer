@@ -569,7 +569,7 @@ Animator:
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -604,10 +604,6 @@ MonoBehaviour:
   rightGunBone: {fileID: 4074054205230555916}
   leftGunBone: {fileID: 8594317393919419588}
   arsenal:
-  - name: Empty
-    rightGun: {fileID: 0}
-    leftGun: {fileID: 0}
-    controller: {fileID: 9100000, guid: e4d38f097ea35254fb4b833d568bb089, type: 2}
   - name: Rifle
     rightGun: {fileID: 100000, guid: d992a232642f7574b80a75c2ca4b4cb8, type: 3}
     leftGun: {fileID: 0}
@@ -644,8 +640,7 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 128
-  bulletPrefab: {fileID: 2167627658982888583, guid: 91108e1fbac42164288165c9435eb69a, type: 3}
-  bulletSpawn: {fileID: 6137562106624134368}
+  bulletPrefab: {fileID: 2167627658982888583, guid: 58290937f80d1df448eae0e8f8ea4aae, type: 3}
   bulletSpeed: 30
   health: 50
   walkPoint: {x: 0, y: 0, z: 0}
@@ -723,10 +718,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.15952988
+  m_Radius: 0.27020216
   m_Height: 0.93839866
   m_Direction: 1
-  m_Center: {x: -0.003979397, y: 0.4688994, z: -0.021935273}
+  m_Center: {x: -0.0038218498, y: 0.4688994, z: -0.021935273}
 --- !u!1 &2999402492900224591
 GameObject:
   m_ObjectHideFlags: 0
