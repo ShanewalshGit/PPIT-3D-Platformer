@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using MimicSpace;
+using UnityEngine.Events;
+using System;
 
 public class SessionController : MonoBehaviour
 {
-    //[SerializeField] int points = 0;
     [SerializeField] int lives = 3;
-    [SerializeField] int health = 30;
+    [SerializeField] int health = 0;
     //[SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI livesText;
 
@@ -20,6 +21,8 @@ public class SessionController : MonoBehaviour
     // Start is called before the first frame update
 
     public static SessionController instance = null; // Singleton pattern for the session controller
+
+    public int finalHealth = 0;
     
     private void Awake() // Singleton pattern for the session controller
     {
@@ -32,19 +35,29 @@ public class SessionController : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+
+        // Set leaderboard to inactive
+        GameObject leaderboard = GameObject.Find("Leaderboard");
+        GameObject leaderboardManager = GameObject.Find("LeaderboardManager");
     }
     
     void Start()
     {
-        livesText.text = lives.ToString();
-        healthText.text = health.ToString();
+        //livesText.text = lives.ToString();
+        //healthText.text = health.ToString();
+
+        // Set the progress bar to the current health
+        FindAnyObjectByType<ProgressBar>().SetCurrent(health);
     }
 
     //On hit, reduce health and reduce scale of player object
     public void ReduceHealth(int damage)
     {
         health -= damage;
-        healthText.text = health.ToString();
+        //healthText.text = health.ToString();
+
+        // Subtract from progress bar
+        FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
         // Get the mimicbody
         mimicBody = GameObject.Find("Sphere");
@@ -55,6 +68,9 @@ public class SessionController : MonoBehaviour
         // Decrease the scale by a certain factor
         float scaleReductionFactor = 0.5f; // Change this to whatever factor you want
         Vector3 newScale = currentScale * (1 - scaleReductionFactor);
+
+        //Play player hurt sound
+        FindObjectOfType<AudioManager>().PlayPlayerHurt();
 
         // Set the mimics new scale
         mimicBody.transform.localScale = newScale;
@@ -67,7 +83,10 @@ public class SessionController : MonoBehaviour
     public void AddHealth(int healthToAdd)
     {
         health += healthToAdd;
-        healthText.text = health.ToString();
+        //healthText.text = health.ToString();
+
+        // Add to progress bar
+        FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
         // Get the mimicbody
         mimicBody = GameObject.Find("Sphere");
@@ -76,7 +95,7 @@ public class SessionController : MonoBehaviour
         Vector3 currentScale = mimicBody.transform.localScale;
 
         // Increase the scale by a certain factor
-        float scaleIncreaseFactor = 0.1f; // Change this to whatever factor you want
+        float scaleIncreaseFactor = 0.2f; // Change this to whatever factor you want
         Vector3 newScale = currentScale * (1 + scaleIncreaseFactor);
 
         // Set the mimics new scale
@@ -87,14 +106,21 @@ public class SessionController : MonoBehaviour
     {
         lives--;
         //Debug.Log("Lives: " + lives);
-        livesText.text = lives.ToString();
+        //livesText.text = lives.ToString();
+        FindAnyObjectByType<LivesContainer>().UpdateIcons(lives);
+
+        // Play the player death sound
+        FindObjectOfType<AudioManager>().PlayPlayerDeath();
 
         // Reload the scene if the player loses a life
         if(lives >= 1)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-            health = 30; // Reset the player's health
-            healthText.text = health.ToString();
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            health = 0; // Reset the player's health
+            //healthText.text = health.ToString();
+
+            // Reset the progress bar
+            FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
             // Get the mimicbody
             mimicBody = GameObject.Find("Sphere");
@@ -110,7 +136,15 @@ public class SessionController : MonoBehaviour
         if(lives == 0)
         {
             Debug.Log("Game Over");
-            ResetGameSession();
+
+            // Play the game over sound
+            FindObjectOfType<AudioManager>().PlayGameOver();
+
+            // Set the final health
+            finalHealth = health;
+
+            // Load the game over scene
+            SceneManager.LoadSceneAsync(4);
         }
 
         // If the player presses the "R" key, reload the scene
@@ -119,8 +153,11 @@ public class SessionController : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
             // Reset the player's health and scale
-            health = 50;
-            healthText.text = health.ToString();
+            health = 0;
+            //healthText.text = health.ToString();
+
+            // Reset the progress bar
+            FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
             // Get the mimicbody
             mimicBody = GameObject.Find("Sphere");
@@ -129,7 +166,7 @@ public class SessionController : MonoBehaviour
 
             // Reset the player's lives
             lives = 3;
-            livesText.text = lives.ToString();
+            //livesText.text = lives.ToString();
         }
 
         if(Input.GetKeyDown(KeyCode.T))
@@ -146,11 +183,21 @@ public class SessionController : MonoBehaviour
 
         // Re initialize the ui
         //scoreText.text = points.ToString();
-        livesText.text = lives.ToString();
-        healthText.text = health.ToString();
+        //livesText.text = lives.ToString();
+        //healthText.text = health.ToString();
 
         Cursor.visible = true; // Make the cursor visible
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor if it was locked
+    }
+
+    public int GetHealth()
+    {
+        return finalHealth;
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 
     
