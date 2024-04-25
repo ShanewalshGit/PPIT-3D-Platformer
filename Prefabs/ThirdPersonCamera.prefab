@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3847539807156540006}
-  - component: {fileID: 1862903416544276282}
+  - component: {fileID: 1378752455100926824}
   m_Layer: 0
   m_Name: BottomRig
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 8851664750124309550}
   m_Father: {fileID: 543323861384932648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1862903416544276282
+--- !u!114 &1378752455100926824
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,8 +89,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8851664750124309550}
   - component: {fileID: 7898540520736615338}
-  - component: {fileID: 2301234598378323859}
-  - component: {fileID: 4229297588089455352}
+  - component: {fileID: -4943032086094156582}
+  - component: {fileID: -9064007461122425979}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2301234598378323859
+--- !u!114 &-4943032086094156582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,8 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2, z: -7}
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 0, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_LegacyHeightOffset: 3.4028235e+38
   m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 1
---- !u!114 &4229297588089455352
+--- !u!114 &-9064007461122425979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2096913400138535208}
-  - component: {fileID: 2706656763645040224}
+  - component: {fileID: 7776584700612963526}
   m_Layer: 0
   m_Name: MiddleRig
   m_TagString: Untagged
@@ -239,7 +239,7 @@ Transform:
   - {fileID: 6864877669795116992}
   m_Father: {fileID: 543323861384932648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2706656763645040224
+--- !u!114 &7776584700612963526
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,8 +295,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6864877669795116992}
   - component: {fileID: 3221963881506934826}
-  - component: {fileID: 2625264876199734020}
-  - component: {fileID: 8838013422475377759}
+  - component: {fileID: 3042258998718959551}
+  - component: {fileID: 96920713281228439}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2625264876199734020
+--- !u!114 &3042258998718959551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -343,8 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2, z: -7}
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 0, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_LegacyHeightOffset: 3.4028235e+38
   m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 1
---- !u!114 &8838013422475377759
+--- !u!114 &96920713281228439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -551,9 +551,9 @@ MonoBehaviour:
     m_Radius: 5
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
-  - {fileID: 6374596195503882157}
-  - {fileID: 2706656763645040224}
-  - {fileID: 1862903416544276282}
+  - {fileID: -7493300187544861325}
+  - {fileID: 7776584700612963526}
+  - {fileID: 1378752455100926824}
 --- !u!114 &7895160835352916100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,7 +605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3034803662378974101}
-  - component: {fileID: 6374596195503882157}
+  - component: {fileID: -7493300187544861325}
   m_Layer: 0
   m_Name: TopRig
   m_TagString: Untagged
@@ -629,7 +629,7 @@ Transform:
   - {fileID: 3867086378386397789}
   m_Father: {fileID: 543323861384932648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6374596195503882157
+--- !u!114 &-7493300187544861325
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,8 +685,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3867086378386397789}
   - component: {fileID: 5417423790839049206}
-  - component: {fileID: 5352675509029361378}
-  - component: {fileID: 3945406731100787249}
+  - component: {fileID: -4698703132296645692}
+  - component: {fileID: 6706801020136905563}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5352675509029361378
+--- !u!114 &-4698703132296645692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -733,8 +733,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2, z: -7}
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 0, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -775,7 +775,7 @@ MonoBehaviour:
   m_LegacyHeightOffset: 3.4028235e+38
   m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 1
---- !u!114 &3945406731100787249
+--- !u!114 &6706801020136905563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
