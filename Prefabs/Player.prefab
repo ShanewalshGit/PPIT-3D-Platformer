@@ -129,6 +129,7 @@ MonoBehaviour:
   BulletParent: {fileID: 7863785839126491176}
   bulletSpeed: 30
   orient: {fileID: 7863785839126491176}
+  shootCooldown: 5
 --- !u!114 &8479042570674070595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,11 +344,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8675915457954794083, guid: 3fc537e92bf3d2449b5be72cfd6cb447, type: 3}
       propertyPath: velocity.x
-      value: 0.23532577
+      value: -0.40511647
       objectReference: {fileID: 0}
     - target: {fileID: 8675915457954794083, guid: 3fc537e92bf3d2449b5be72cfd6cb447, type: 3}
       propertyPath: velocity.z
-      value: -0.55175656
+      value: 0.89927554
       objectReference: {fileID: 0}
     - target: {fileID: 8675915457954794083, guid: 3fc537e92bf3d2449b5be72cfd6cb447, type: 3}
       propertyPath: numberOfLegs
