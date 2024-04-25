@@ -644,7 +644,7 @@ MonoBehaviour:
   bulletSpeed: 30
   health: 50
   walkPoint: {x: 0, y: 0, z: 0}
-  walkPointRange: 5
+  walkPointRange: 10
   timeBetweenAttacks: 0.5
   sightRange: 20
   attackRange: 15

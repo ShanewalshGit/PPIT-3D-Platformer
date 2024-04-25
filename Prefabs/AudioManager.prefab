@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
+  m_Volume: 0.016
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -309,17 +309,17 @@ MonoBehaviour:
   backgroundMusic3: {fileID: 8300000, guid: 83a0a974ab25a4adfba3cbb3a1aaa76e, type: 3}
   menuMusic: {fileID: 8300000, guid: 6dc4be81296344087a45172d7ba5e06f, type: 3}
   buttonClick: {fileID: 8300000, guid: 405fd55832bac4e4e9c48d2a0e85e1a2, type: 3}
-  gameOver: {fileID: 8300000, guid: 1e5b901039c1b25499c005d969de1910, type: 3}
+  gameOver: {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
   gameWin: {fileID: 8300000, guid: 42cec971f4d27594f8720d1c1eab9ec0, type: 3}
-  playerMove: {fileID: 0}
-  playerJump: {fileID: 0}
-  playerDeath: {fileID: 0}
-  playerHurt: {fileID: 0}
-  playerAttack: {fileID: 0}
-  playerCollect: {fileID: 0}
-  wizardEnemyAttack: {fileID: 0}
-  wizardEnemyDeath: {fileID: 0}
-  explosion: {fileID: 0}
+  playerJump: {fileID: 8300000, guid: 726df1fa114b64773ad65856d81b7c12, type: 3}
+  playerDeath: {fileID: 8300000, guid: 5d1a8dd0aa3e7394d89e72a3653d5bb3, type: 3}
+  playerHurt: {fileID: 8300000, guid: a34df71561f110a4e92eaaceb06ee32d, type: 3}
+  playerAttack1: {fileID: 8300000, guid: 38eb3ce977e73a54a8b2c638bc63509e, type: 3}
+  playerAttack2: {fileID: 8300000, guid: 47f0b5739725b444db11f258427882d2, type: 3}
+  playerCollect: {fileID: 8300000, guid: 3800d9607389c45b0a8673d3db98aded, type: 3}
+  enemyAttack: {fileID: 8300000, guid: 406abe6e803b244eca380af5865dc5cb, type: 3}
+  enemyDeath: {fileID: 8300000, guid: 6d8e965fd419b6343b105667b7439a49, type: 3}
+  explosion: {fileID: 8300000, guid: ed666941707abcc45af72541537cfcdc, type: 3}
   backgroundMusic: []
   playerSteps: []
   playerSteps1: {fileID: 8300000, guid: 1e5b901039c1b25499c005d969de1910, type: 3}

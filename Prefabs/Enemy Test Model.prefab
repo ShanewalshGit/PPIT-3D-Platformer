@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 1274844765429464421}
   - component: {fileID: 4369047540541459280}
   - component: {fileID: 2065232581866730418}
-  - component: {fileID: 7450244557840194628}
-  - component: {fileID: 1357355069832449525}
+  - component: {fileID: 2278778683604952413}
+  - component: {fileID: 2800789636909886934}
+  - component: {fileID: 2133031486314123058}
   m_Layer: 0
   m_Name: Enemy Test Model
   m_TagString: Enemy
@@ -133,9 +134,31 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 64
+  m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &7450244557840194628
+--- !u!195 &2278778683604952413
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7848688641519503308}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.75
+  m_Speed: 8
+  m_Acceleration: 9
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &2800789636909886934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,11 +167,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 7848688641519503308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eda1571d1ff06a4aaafa352d5ceac96, type: 3}
+  m_Script: {fileID: 11500000, guid: febfa71f724e54d499d4e96b0954f89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
---- !u!114 &1357355069832449525
+  player: {fileID: 3423562098337076629, guid: 3e776a4ce2145ba4ebaf081ef9874965, type: 3}
+  agent: {fileID: 2278778683604952413}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128
+  bulletPrefab: {fileID: 2167627658982888583, guid: 91108e1fbac42164288165c9435eb69a, type: 3}
+  bulletSpawn: {fileID: 4852532183232482384}
+  bulletSpeed: 30
+  health: 50
+  walkPoint: {x: 0, y: 0, z: 0}
+  walkPointRange: 5
+  timeBetweenAttacks: 0.5
+  sightRange: 20
+  attackRange: 12
+  playerInSightRange: 0
+  playerInAttackRange: 0
+--- !u!114 &2133031486314123058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
