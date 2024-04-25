@@ -12,11 +12,11 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Platform") {
+        if (other.tag == "Platform") { // Destroy the bullet if it hits a platform
             Destroy(gameObject);
         }
 
-        if (other.tag == "Player" && gameObject.tag == "EnemyBullet") {
+        if (other.tag == "Player" && gameObject.tag == "EnemyBullet") { // Reduce player health if hit by enemy bullet
             FindObjectOfType<SessionController>().ReduceHealth(10);
         }
     }

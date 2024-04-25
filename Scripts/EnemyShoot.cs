@@ -31,11 +31,14 @@ public class EnemyShoot : MonoBehaviour
             // instantiate bullet
             Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
            // give it position close to player
-            bullet.transform.position = transform.position + new Vector3(1, 0, 0);
+            bullet.transform.position = transform.position + new Vector3(1, 3, 0);
             // give it velocity and move right
             Rigidbody rbb = bullet.GetComponent<Rigidbody>();
             //rbb.velocity = new Vector2(1 * speed, 0);
             rbb.velocity = Vector2.right * bulletSpeed;
+
+            // Shoot sfx
+            FindObjectOfType<AudioManager>().PlayEnemyAttack();
 
 
 

@@ -64,14 +64,6 @@ public class AudioManager : MonoBehaviour
 
             playerSteps = new AudioClip[] {playerSteps1, playerSteps2, playerSteps3, playerSteps4};
         }
-
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SpeedUpMusic()
@@ -101,6 +93,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayPlayerJump()
     {
+        SFXSource.volume = 0.2f;
         SFXSource.PlayOneShot(playerJump);
     }
 

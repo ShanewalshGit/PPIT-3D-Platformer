@@ -5,24 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Exit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other) {
-        if(other.tag == "Player")
+        if(other.tag == "Player") // If player reaches the exit, play win sound and set exit triggered to true
         {
-            if(SceneManager.GetActiveScene().buildIndex == 2)
-            {
-                Debug.Log("You win!");
-                SceneManager.LoadScene(0);
-            }
-            else {
-                Debug.Log("You win!");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
+            // play win sound
+            FindObjectOfType<AudioManager>().PlayGameWin();
+
+            // Set exit triggered to true
+            FindAnyObjectByType<SessionController>().SetExit();
         }
     }
 }

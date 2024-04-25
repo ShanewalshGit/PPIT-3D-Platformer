@@ -9,26 +9,20 @@ public class SpawnControl : MonoBehaviour
     [SerializeField] private int maxEnemies = 5;
     [SerializeField] private float spawnTime = 3.0f;
     [SerializeField] private float spawnInterval = 3.0f;
-
     private int enemiesSpawned = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine("SpawnEnemyWaves");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void SpawnEnemyWaves()
+    void SpawnEnemyWaves() // Spawn enemies in waves at regular intervals
     {
         InvokeRepeating("SpawnOneEnemy", spawnTime, spawnInterval);
     }
 
-    void SpawnOneEnemy()
+    void SpawnOneEnemy() // Spawn one enemy at a time
     {
         //Randomly select a spawn point from the array
         int spawnPointIndex = Random.Range(0, spawnPoints.Length);
