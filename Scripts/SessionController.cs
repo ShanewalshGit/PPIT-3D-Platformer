@@ -10,19 +10,26 @@ using System;
 
 public class SessionController : MonoBehaviour
 {
+
+    // Variables for player lives, health and parts
     [SerializeField] int lives = 3;
     [SerializeField] int health = 0;
+    public int finalHealth = 0;
+    public int partsNeeded = 3;
+    public int parts = 0;
+
+    // UI elements for lives and health
     //[SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI livesText;
-
     [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] TextMeshProUGUI partsText;
 
-    GameObject mimicBody;
-    // Start is called before the first frame update
+    public Boolean exitTriggered = false; // Boolean to check if the exit has been triggered
+
+    GameObject mimicBody; // Mimic's body reference
 
     public static SessionController instance = null; // Singleton pattern for the session controller
 
-    public int finalHealth = 0;
     
     private void Awake() // Singleton pattern for the session controller
     {
@@ -41,10 +48,12 @@ public class SessionController : MonoBehaviour
         GameObject leaderboardManager = GameObject.Find("LeaderboardManager");
     }
     
+    // Start is called before the first frame update
     void Start()
     {
         //livesText.text = lives.ToString();
         //healthText.text = health.ToString();
+        partsText.text = parts + "/" + partsNeeded;
 
         // Set the progress bar to the current health
         FindAnyObjectByType<ProgressBar>().SetCurrent(health);
@@ -66,8 +75,11 @@ public class SessionController : MonoBehaviour
         Vector3 currentScale = mimicBody.transform.localScale;
 
         // Decrease the scale by a certain factor
-        float scaleReductionFactor = 0.5f; // Change this to whatever factor you want
+        float scaleReductionFactor = 0.4f; // Change this to whatever factor you want
         Vector3 newScale = currentScale * (1 - scaleReductionFactor);
+
+        // decrease the collider size
+        mimicBody.GetComponent<SphereCollider>().radius -= 0.4f;
 
         //Play player hurt sound
         FindObjectOfType<AudioManager>().PlayPlayerHurt();
@@ -95,11 +107,14 @@ public class SessionController : MonoBehaviour
         Vector3 currentScale = mimicBody.transform.localScale;
 
         // Increase the scale by a certain factor
-        float scaleIncreaseFactor = 0.2f; // Change this to whatever factor you want
+        float scaleIncreaseFactor = 0.1f; // Change this to whatever factor you want
         Vector3 newScale = currentScale * (1 + scaleIncreaseFactor);
 
         // Set the mimics new scale
         mimicBody.transform.localScale = newScale;
+
+        // Increase the collider size
+        mimicBody.GetComponent<SphereCollider>().radius += 0.1f;
     }
 
     public void RemoveLife()
@@ -119,6 +134,9 @@ public class SessionController : MonoBehaviour
             health = 0; // Reset the player's health
             //healthText.text = health.ToString();
 
+            parts = 0; // Reset the parts collected
+            partsText.text = parts + "/" + partsNeeded;
+
             // Reset the progress bar
             FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
@@ -126,7 +144,14 @@ public class SessionController : MonoBehaviour
             mimicBody = GameObject.Find("Sphere");
 
             mimicBody.transform.localScale = new Vector3(1, 1, 1); // Reset the player's scale
+            mimicBody.GetComponent<SphereCollider>().radius = 0.5f; // Reset the collider size
         }
+    }
+
+    public void AddPart()
+    {
+        parts++;
+        partsText.text = parts + "/" + partsNeeded;
     }
 
     // Update is called once per frame
@@ -146,6 +171,46 @@ public class SessionController : MonoBehaviour
             // Load the game over scene
             SceneManager.LoadSceneAsync(4);
         }
+        if(exitTriggered == true && parts == partsNeeded)
+        {
+            // if current scene is scene 3, load scene 5
+            if(SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                Debug.Log("You Win");
+
+                // Play the game win sound
+                FindObjectOfType<AudioManager>().PlayGameWin();
+
+                // Set the final health
+                finalHealth = health;
+                // Load the game win scene
+                SceneManager.LoadSceneAsync(5);            
+            }
+            else {
+                // load next scene
+                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+
+                // Reset the player's health and scale
+                health = 0;
+                //healthText.text = health.ToString();
+
+                parts = 0;
+                partsText.text = parts + "/" + partsNeeded;
+
+                // Reset the progress bar
+                FindAnyObjectByType<ProgressBar>().SetCurrent(health);
+
+                // Get the mimicbody
+                mimicBody = GameObject.Find("Sphere");
+                mimicBody.GetComponent<SphereCollider>().radius = 0.5f; // Reset the collider size
+            }
+
+        }
+        else
+        {
+            Debug.Log("Not enough parts collected");
+            exitTriggered = false;
+        }
 
         // If the player presses the "R" key, reload the scene
         if (Input.GetKeyDown(KeyCode.R))
@@ -156,13 +221,20 @@ public class SessionController : MonoBehaviour
             health = 0;
             //healthText.text = health.ToString();
 
+            parts = 0;
+            partsText.text = parts + "/" + partsNeeded;
+
             // Reset the progress bar
             FindAnyObjectByType<ProgressBar>().SetCurrent(health);
 
             // Get the mimicbody
             mimicBody = GameObject.Find("Sphere");
             
+            // Reset the mimicbody's scale
             mimicBody.transform.localScale = new Vector3(1, 1, 1);
+
+            // Reset the collider size
+            mimicBody.GetComponent<SphereCollider>().radius = 0.5f;
 
             // Reset the player's lives
             lives = 3;
@@ -181,11 +253,6 @@ public class SessionController : MonoBehaviour
         SceneManager.LoadSceneAsync(0);
         Destroy(gameObject);
 
-        // Re initialize the ui
-        //scoreText.text = points.ToString();
-        //livesText.text = lives.ToString();
-        //healthText.text = health.ToString();
-
         Cursor.visible = true; // Make the cursor visible
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor if it was locked
     }
@@ -200,5 +267,14 @@ public class SessionController : MonoBehaviour
         return lives;
     }
 
+    public void setLives(int newLives)
+    {
+        lives = newLives;
+    }
+
+    public void SetExit()
+    {
+        exitTriggered = true;
+    }
     
 }

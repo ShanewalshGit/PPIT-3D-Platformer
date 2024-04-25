@@ -6,14 +6,16 @@ using UnityEngine.UI;
 
 public class LivesContainer : MonoBehaviour
 {
+    // UI elements for lives
     [SerializeField] private UnityEngine.UI.Image[] FilledLivesIcons;
     [SerializeField] private UnityEngine.UI.Image[] EmptyLivesIcons;
 
+    int maxLives = 3; // Maximum number of lives
 
-    int maxLives = 3;
     // Start is called before the first frame update
     void Start()
     {
+        // Update icons to show the current number of lives
         UpdateIcons(FindAnyObjectByType<SessionController>().GetLives());
 
         // disable all the empty lives icons
@@ -25,7 +27,7 @@ public class LivesContainer : MonoBehaviour
 
     public void UpdateIcons(int currentLives)
     {
-        if(currentLives < maxLives)
+        if(currentLives < maxLives) // If current lives are less than the maximum lives, update the icons
         {
             Debug.Log("Current lives: " + currentLives);
             // Hide the icons that are not needed

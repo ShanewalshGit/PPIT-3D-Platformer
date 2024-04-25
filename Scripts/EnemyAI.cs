@@ -5,9 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    // Enemy AI Script for patrolling, chasing and attacking player using NavMeshAgent and Raycasting for sight and attack range
     public Transform player;
-    public NavMeshAgent agent;
-    public LayerMask whatIsGround, whatIsPlayer;
+    public NavMeshAgent agent; // NavMeshAgent for enemy movement
+    public LayerMask whatIsGround, whatIsPlayer; // LayerMasks for ground and player
 
     //Projectile fire
     public Bullet bulletPrefab;
@@ -18,7 +19,7 @@ public class EnemyAI : MonoBehaviour
 
     //Patrolling
     public Vector3 walkPoint;
-    bool walkPointSet;
+    bool walkPointSet = false;
     public float walkPointRange;
 
     //Attacking
@@ -43,6 +44,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+        Patrolling();
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
@@ -64,8 +66,10 @@ public class EnemyAI : MonoBehaviour
         Vector3 distanceToWalkPoint = transform.position - walkPoint; // Distance between enemy and walkpoint
         actions.Walk(); // Run animation
 
+        //Debug.Log("Distance to walkpoint: " + distanceToWalkPoint.magnitude);
+
         //When walkpoint is reached
-        if (distanceToWalkPoint.magnitude < 1f)
+        if (distanceToWalkPoint.magnitude < 2f)
             walkPointSet = false;
     }
 
@@ -76,10 +80,10 @@ public class EnemyAI : MonoBehaviour
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
         // Set walkpoint to random point in range and check if it is on the ground
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y + 1, transform.position.z + randomZ);
         actions.Stay(); // Stay animation
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+        if (Physics.Raycast(walkPoint, -transform.up, 3f, whatIsGround)) // Check if walkpoint is on the ground
             walkPointSet = true;
     }
 
@@ -102,10 +106,13 @@ public class EnemyAI : MonoBehaviour
             // instantiate bullet
             Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity); // create bullet
             // give it position close to enemy
-            bullet.transform.position = transform.position + new Vector3(1, 0, 0);
+            bullet.transform.position = transform.position + new Vector3(0, 1.5f, 0);
             // give it velocity in direction of player
             Rigidbody rbb = bullet.GetComponent<Rigidbody>();
             rbb.velocity = (player.position - transform.position).normalized * bulletSpeed;
+
+            // add bullet drop
+            rbb.velocity += new Vector3(0, -0.5f, 0);
 
             // Shoot sfx
             FindObjectOfType<AudioManager>().PlayEnemyAttack();
